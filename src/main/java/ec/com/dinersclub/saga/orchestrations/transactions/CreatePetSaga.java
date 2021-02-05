@@ -1,6 +1,7 @@
 package ec.com.dinersclub.saga.orchestrations.transactions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +13,6 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import ec.com.dinersclub.saga.orchestrations.rollback.CancelCreatePet;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
-import ec.com.dinersclub.saga.orchestrations.transactions.models.PetCategory;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.PetTags;
 import ec.com.dinersclub.saga.services.CountriesService;
 import ec.com.dinersclub.saga.services.PetstoreService;
@@ -36,18 +36,15 @@ public class CreatePetSaga {
 	CancelCreatePet cancel;
 	
 	public Petstore createPet(Pet pet) {
+		
 		Petstore petstore = new Petstore();
 		petstore.id = pet.getId();
 		
-		List<PetstoreCategory> listaCategory = new ArrayList<PetstoreCategory>();
-		for(PetCategory cat : pet.getCategory()) {
-			PetstoreCategory category = new PetstoreCategory();
-			category.id = cat.getId();
-			category.name = cat.getName();
-			listaCategory.add(category);
-		}
+		PetstoreCategory category = new PetstoreCategory();
+		category.id = pet.getCategory().getId();
+		category.name = pet.getCategory().getName();
 		
-		petstore.category = listaCategory;
+		petstore.category = category;
 		petstore.name = pet.getName();
 		petstore.photoUrls = pet.getPhotoUrls();
 		
@@ -63,8 +60,13 @@ public class CreatePetSaga {
 		petstore.status = pet.getStatus();
 		
 		petstoreService.createPet(petstore);
+		Set<Country> country = new HashSet<Country>();
 		
-		Set<Country> country = countriesService.getByName("greece");
+		if(pet.getStatus().equalsIgnoreCase("rollback")) {
+			country = countriesService.getByName("xxx");
+		}else {
+			country = countriesService.getByName("greece");
+		}
 		if(!country.isEmpty()) {
 			PetstoreTags pt = new PetstoreTags();
 			pt.id = 99;

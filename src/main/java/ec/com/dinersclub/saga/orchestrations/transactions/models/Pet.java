@@ -5,7 +5,7 @@ import java.util.List;
 public class Pet {
 	
 	private int id;
-	private List<PetCategory> category;
+	private PetCategory category;
 	private String name;
 	private List<String> photoUrls;
 	private List<PetTags> tags;
@@ -17,10 +17,10 @@ public class Pet {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public List<PetCategory> getCategory() {
+	public PetCategory getCategory() {
 		return category;
 	}
-	public void setCategory(List<PetCategory> category) {
+	public void setCategory(PetCategory category) {
 		this.category = category;
 	}
 	public String getName() {

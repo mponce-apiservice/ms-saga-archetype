@@ -35,7 +35,7 @@ public class SagaResource {
     	maybeFail();
     	Petstore petstore = saga.createPet(pet);
     	if(petstore != null) {
-    		return Response.ok(201).build();
+    		return Response.status(201).build();
     	}
     	return Response.noContent().build();
     }

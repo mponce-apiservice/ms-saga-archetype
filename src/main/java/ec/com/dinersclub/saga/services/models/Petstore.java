@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Petstore {
 
     public int id;
-    public List<PetstoreCategory> category;
+    public PetstoreCategory category;
     public String name;
     public List<String> photoUrls;
     public List<PetstoreTags> tags;
