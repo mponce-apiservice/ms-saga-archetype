@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import ec.com.dinersclub.saga.events.ICancelCreatePetEventRollback;
 import ec.com.dinersclub.saga.orchestrations.rollback.CancelCreatePet;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.PetTags;

@@ -34,6 +34,7 @@ public class SagaResource {
     public Response create(Pet pet) {
     	maybeFail();
     	Petstore petstore = saga.createPet(pet);
+    	System.out.println(pet.getId());
     	if(petstore != null) {
     		return Response.status(201).build();
     	}

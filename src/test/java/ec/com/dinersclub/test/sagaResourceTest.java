@@ -2,6 +2,8 @@ package ec.com.dinersclub.test;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.Random;
+
 import javax.ws.rs.core.MediaType;
 
 import org.junit.jupiter.api.Test;
@@ -11,11 +13,14 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 public class sagaResourceTest {
 	
+	Random rand = new Random();
+	private int upperbound = 999;
+	
 	@Test
     public void testRollback() {
         given()
                 .body("{\n" + 
-                		"  \"id\": 99,\n" + 
+                		"  \"id\": "+rand.nextInt(upperbound)+",\n" + 
                 		"  \"category\": {\n" + 
                 		"    \"id\": 1,\n" + 
                 		"    \"name\": \"newCategory\"\n" + 
@@ -43,7 +48,7 @@ public class sagaResourceTest {
     public void testCreate() {
         given()
                 .body("{\n" + 
-                		"  \"id\": 99,\n" + 
+                		"  \"id\": "+rand.nextInt(upperbound)+",\n" + 
                 		"  \"category\": {\n" + 
                 		"    \"id\": 1,\n" + 
                 		"    \"name\": \"newCategory\"\n" + 
