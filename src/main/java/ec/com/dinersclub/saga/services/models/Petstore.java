@@ -1,13 +1,18 @@
 package ec.com.dinersclub.saga.services.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.PetCategory;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.PetTags;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Petstore {
@@ -31,6 +36,15 @@ public class Petstore {
     	this.tags = this.getTags(pet.getTags());
     	this.status = pet.getStatus();
     }
+    
+    public Petstore(JsonObject pet) {
+    	this.id = pet.getInteger("id");
+    	this.category = this.getCategory(pet.getJsonObject("category"));
+    	this.name = pet.getString("name");
+    	this.photoUrls = this.getPhotoUrls(pet.getJsonArray("photoUrls"));
+    	this.tags = this.getTags(pet.getJsonArray("tags"));
+    	this.status = pet.getString("status");
+    }
 
     public static class PetstoreCategory {
         public int id;
@@ -49,6 +63,13 @@ public class Petstore {
     	return category;
     }
     
+    private PetstoreCategory getCategory(JsonObject petCategory) {
+    	PetstoreCategory category = new PetstoreCategory();
+    	category.id = petCategory.getInteger("id");
+    	category.name = petCategory.getString("name");
+    	return category;
+    }
+    
     private List<PetstoreTags> getTags(List<PetTags> petTags) {
     	List<PetstoreTags> tags = new ArrayList<PetstoreTags>();
     	for(PetTags tag : petTags) {
@@ -60,11 +81,36 @@ public class Petstore {
     	return tags;
     }
     
-    public void addTags(int id, String name) {
+    private List<PetstoreTags> getTags(JsonArray petTags) {
+    	List<PetstoreTags> tags = new ArrayList<PetstoreTags>();
+    	for(Object tag : petTags.getList()) {
+    		PetstoreTags t = (PetstoreTags) tag;
+    		tags.add(t);
+    	}
+    	return tags;
+    }
+    
+    private List<String> getPhotoUrls(JsonArray lista) {
+    	List<String> urls = new ArrayList<String>();
+    	for(Object url : lista.getList()) {
+    		urls.add(url.toString());
+    	}
+    	return urls;
+    }
+    
+    public void addTags(String name) {
+    	Random rand = new Random();
     	PetstoreTags t = new PetstoreTags();
-    	t.id = id;
+    	t.id = rand.nextInt(99);;
     	t.name = name;
     	this.tags.add(t);
+    }
+    
+    public void addTags(Set<Country> country) {
+		Iterator<Country> itr = country.iterator();
+        while (itr.hasNext()) { 
+        	this.addTags(itr.next().name);
+        }
     }
 
 }

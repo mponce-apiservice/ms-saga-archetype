@@ -1,7 +1,6 @@
 package ec.com.dinersclub.saga.orchestrations.transactions;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,7 +14,6 @@ import ec.com.dinersclub.saga.services.CountriesService;
 import ec.com.dinersclub.saga.services.PetstoreService;
 import ec.com.dinersclub.saga.services.models.Country;
 import ec.com.dinersclub.saga.services.models.Petstore;
-import ec.com.dinersclub.saga.services.models.Petstore.PetstoreTags;
 
 @ApplicationScoped
 public class CreatePetSaga implements ICreatePetSaga {
@@ -32,10 +30,10 @@ public class CreatePetSaga implements ICreatePetSaga {
 	CancelCreatePet cancel;
 	
 	public Petstore createPet(Pet pet) {
-		
+
 		Petstore petstore = new Petstore(pet);
 		petstoreService.createPet(petstore);
-		
+
 		Set<Country> country = new HashSet<Country>();
 		if(pet.getStatus().equalsIgnoreCase("rollback")) {
 			country = countriesService.getByName("xxx");
@@ -44,17 +42,14 @@ public class CreatePetSaga implements ICreatePetSaga {
 		}
 		
 		if(!country.isEmpty()) {
-			Iterator<Country> itr = country.iterator();
-	        while (itr.hasNext()) { 
-	        	Country c = itr.next();
-	        	petstore.addTags(99, c.name);
-	        }
+	        petstore.addTags(country);
 			petstoreService.updatePet(petstore);
+			return petstore;
 		}else {
-			cancel.compensatingCreatePet(pet.getId());
+			cancel.compensatingCreatePet(petstore);
 			return null;
 		}
-		return petstore;
+		
 	}
 
 }
