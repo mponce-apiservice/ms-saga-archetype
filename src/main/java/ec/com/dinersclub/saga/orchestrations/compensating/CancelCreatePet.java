@@ -1,4 +1,4 @@
-package ec.com.dinersclub.saga.orchestrations.rollback;
+package ec.com.dinersclub.saga.orchestrations.compensating;
 
 import java.util.Set;
 
@@ -13,7 +13,7 @@ import ec.com.dinersclub.saga.services.PetstoreService;
 import ec.com.dinersclub.saga.services.models.PetstoreDelete;
 
 @ApplicationScoped
-public class CancelCreatePet {
+public class CancelCreatePet implements ICancelCreatePet {
 	
 	@Inject
     @RestClient
@@ -22,7 +22,7 @@ public class CancelCreatePet {
 	@Inject
 	ICancelCreatePetEventRollback eventRollback;
 	
-	public void rollbackCreatePet(int id) {
+	public void compensatingCreatePet(int id) {
 		Set<PetstoreDelete> response = petstoreService.deleteByPetId(id);
 		if(response.isEmpty()) {
 			Rollback rb = new Rollback();

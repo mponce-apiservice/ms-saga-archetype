@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 
-import ec.com.dinersclub.saga.orchestrations.transactions.CreatePetSaga;
+import ec.com.dinersclub.saga.orchestrations.transactions.ICreatePetSaga;
 import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
 import ec.com.dinersclub.saga.services.models.Petstore;
 
@@ -23,7 +23,7 @@ public class SagaResource {
 	private AtomicLong counter = new AtomicLong(0);
 
 	@Inject
-	CreatePetSaga saga;
+	ICreatePetSaga saga;
 
     @POST
     @Timeout(60000)
@@ -34,7 +34,6 @@ public class SagaResource {
     public Response create(Pet pet) {
     	maybeFail();
     	Petstore petstore = saga.createPet(pet);
-    	System.out.println(pet.getId());
     	if(petstore != null) {
     		return Response.status(201).build();
     	}
