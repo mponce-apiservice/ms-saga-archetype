@@ -12,7 +12,7 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import ec.com.dinersclub.saga.services.PetstoreService;
+import ec.com.dinersclub.saga.services.clients.PetstoreClient;
 import ec.com.dinersclub.saga.services.models.Petstore;
 import ec.com.dinersclub.saga.services.models.PetstoreDelete;
 import io.vertx.core.json.JsonObject;
@@ -22,24 +22,24 @@ public class CancelCreatePetEvent implements ICancelCreatePetEvent {
 	
 	@Inject
     @RestClient
-    PetstoreService petstoreService;
+    PetstoreClient petstoreClient;
 	
-	@Inject @Channel("cancelPet") Emitter<Petstore> retry;
+	//@Inject @Channel("cancelPet") Emitter<Petstore> retry;
 	
 	//@Incoming("cancelPet")
     //@Acknowledgment(Acknowledgment.Strategy.PRE_PROCESSING)
 	public void compensatingCreatePet(JsonObject pet) {
 		
 		Petstore petstore = new Petstore(pet);
-		Set<PetstoreDelete> response = petstoreService.deleteByPetId(petstore.id);
-		if(response.isEmpty()) {
+		PetstoreDelete response = petstoreClient.deleteByPetId(petstore.id);
+		if(response == null) {
 			this.generateEventHandler(petstore);
 		}
 		
 	}
 	
     public void generateEventHandler(Petstore pet) {
-    	retry.send(Message.of(pet));
+    	//retry.send(Message.of(pet));
     }
 
 }

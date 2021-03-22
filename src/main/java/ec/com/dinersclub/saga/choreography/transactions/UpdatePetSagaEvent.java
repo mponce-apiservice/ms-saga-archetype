@@ -14,7 +14,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import ec.com.dinersclub.saga.choreography.compensating.ICancelCreatePetEvent;
 import ec.com.dinersclub.saga.services.CountriesService;
-import ec.com.dinersclub.saga.services.PetstoreService;
+import ec.com.dinersclub.saga.services.clients.PetstoreClient;
 import ec.com.dinersclub.saga.services.models.Country;
 import ec.com.dinersclub.saga.services.models.Petstore;
 import io.vertx.core.json.JsonObject;
@@ -24,7 +24,7 @@ public class UpdatePetSagaEvent implements IUpdatePetSagaEvent {
 	
 	@Inject
     @RestClient
-    PetstoreService petstoreService;
+    PetstoreClient petstoreClient;
 	
 	@Inject
     @RestClient
@@ -33,7 +33,7 @@ public class UpdatePetSagaEvent implements IUpdatePetSagaEvent {
 	@Inject
 	ICancelCreatePetEvent cancel;
 	
-	@Inject @Channel("updatePet") Emitter<Petstore> retry;
+	//@Inject @Channel("updatePet") Emitter<Petstore> retry;
 	
 	//@Incoming("updatePet")
     //@Acknowledgment(Acknowledgment.Strategy.PRE_PROCESSING)
@@ -46,7 +46,10 @@ public class UpdatePetSagaEvent implements IUpdatePetSagaEvent {
 		if(!country.isEmpty()) {
 			try {
 				petstore.addTags(country);
-	        	petstoreService.updatePet(petstore);
+				Petstore response = petstoreClient.updatePet(petstore);
+				if(response == null) {
+					cancel.generateEventHandler(petstore);
+				}
 	        } catch(Exception ex) {
 				cancel.generateEventHandler(petstore);
 			}
@@ -57,7 +60,7 @@ public class UpdatePetSagaEvent implements IUpdatePetSagaEvent {
 	}
 	
 	public void generateEventHandler(Petstore pet) {
-    	retry.send(Message.of(pet));
+    	//retry.send(Message.of(pet));
     }
 	
 }

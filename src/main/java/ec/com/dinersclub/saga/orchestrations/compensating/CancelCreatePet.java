@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import ec.com.dinersclub.saga.choreography.compensating.ICancelCreatePetEvent;
-import ec.com.dinersclub.saga.services.PetstoreService;
+import ec.com.dinersclub.saga.services.clients.PetstoreClient;
 import ec.com.dinersclub.saga.services.models.Petstore;
 import ec.com.dinersclub.saga.services.models.PetstoreDelete;
 
@@ -17,14 +17,14 @@ public class CancelCreatePet implements ICancelCreatePet {
 	
 	@Inject
     @RestClient
-    PetstoreService petstoreService;
+    PetstoreClient petstoreClient;
 	
 	@Inject
 	ICancelCreatePetEvent eventRollback;
 	
 	public void compensatingCreatePet(Petstore pet) {
-		Set<PetstoreDelete> response = petstoreService.deleteByPetId(pet.id);
-		if(response.isEmpty()) {
+		PetstoreDelete response = petstoreClient.deleteByPetId(pet.id);
+		if(response == null) {
 			eventRollback.generateEventHandler(pet);
 		}
 	}
