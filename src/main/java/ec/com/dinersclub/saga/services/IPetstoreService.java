@@ -1,11 +1,16 @@
 package ec.com.dinersclub.saga.services;
 
-import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
+import ec.com.dinersclub.saga.services.models.Petstore;
+import ec.com.dinersclub.saga.services.models.PetstoreDelete;
 
 public interface IPetstoreService {
 	
-	void createPet(Pet pet);
+	public Petstore createPet(Petstore pet);
 	
-	void removePet(String id, String petId);
+	public void getCountry(Petstore pet);
+	
+	public Petstore updatePet(Petstore pet);
+	
+	public PetstoreDelete removePet(Petstore pet);
 
 }
