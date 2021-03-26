@@ -27,7 +27,6 @@
     - [Tests Unitario](#Tests-Unitario)
     - [Tests de Integración](#Tests-de-Integración)
 - [Despliegue](#Despliegue)
-    - [Herramientas](#Herramientas)
 - [Construido con](#Construido-con:)
 - [Versionamiento](#Versionamiento)
 - [Autores](#Autores)
@@ -36,40 +35,27 @@
 
 ## Descripción del servicio
 
-Arquetipo basado en domain-driven design (DDD) and hexagonal architecture
+Arquetipo basado el Patrón de transacciones distribuidas de Saga
 
-"Debemos mencionar a modo introductorio y contextual es que es lo que se busca resolver con este proyecto/microservicio."
+En este arquetipo se implementa el patrón saja.
+La documentación para la implementación de este patrón esta en el siguiente link de confluence:
+https://apiservice2.atlassian.net/wiki/spaces/DE/pages/809140287/Saga+distributed+transactions+pattern
+
+## Pre-requisitos
+Los reqisitos para usar este proyecto estan mencionados en el siguiente link: https://apiservice2.atlassian.net/wiki/spaces/DE/pages/726466601/Creaci+n+de+un+microservicio#Pre-requisitos
+
+Para la ejecución de forma corecta de este template debemos tener acceso a una base de datos en postgres, la cual debemos configurar en los properties.
 
 ## Primeros pasos
-
-En el apartado de **Getting started** debemos incluir todas las instrucciones referentes al proyecto. Como levantar una copia del mismo en nuestra maquina local para desarrollar y probar. Todo lo referente al despliegue debe ser mencionado en un apartado mas adelante que podra ser encontrado dentro de esta misma plantilla.
-
-### Pre-requisitos
-
-What things you need to install the software and how to install them
-Aqui debemos responder a cabalidad que cosas necesitamos para poder instalar el software y como debemos instalarlo. Debemos incluir a continuacion fragmentos de codigo que permitan guiar este proceso.
+Para ejecutar el proyecto en local debemos usar el siguiente comando:
 
 ```
-Damos ejemplos...
+./mvnw compile quarkus:dev
 ```
 
-### Instalación
+### Despliegue
 
-Una serie de instrucciones paso a paso con ejemplos que permiten configurar/instalar un ambiente de prueba en la maquina del desarrollador que acude a este material.
-
-#### paso 1
-
-```
-Damos un ejemplo.
-```
-
-#### paso n (repetimos)
-
-```
-hasta que terminemos el proceso.
-```
-
-*Podemos terminar este proceso, dando un ejemplo de como deberia quedar el entorno una vez configurado o el software corriendo.*
+El despliegue del componente se hace mediante el pipeline. Para el cual el rol de devops deberá crear el pipeline para el componente.
 
 ---
 
@@ -80,41 +66,22 @@ Se debe explicar como se ejecutan las pruebas, si son automatizadas y de existir
 
 ### Tests Unitarios
 
-Se explica brevemente que es lo que prueban estas pruebas y se muestra con ejemplo como llevar a cabo este proceso.
+Para comprobar el reusltado de los test se debe ejecutar el comando:
 
 ```
-Damos ejemplos del proceso
+mvn test
 ```
 
 ### Tests de Integración
 
-Se explica brevemente que es lo que prueban estas pruebas y se muestra con ejemplo como llevar a cabo este proceso.
+Para ejecutar los test de integración en la tarpeta test debejos primero installar los modulos npm.
 
 ```
-Damos ejemplos del proceso
+npm install
 ```
-
-### Tests (n)
-
-Se explica brevemente que es lo que prueban estas pruebas y se muestra con ejemplo como llevar a cabo este proceso.
-
+y luego ejecutar:
 ```
-Damos ejemplos del proceso
-```
-
-## Despliegue
-
-En la seccion de despliegue debemos indicar los pasos a seguir y las herramientas involucradas en el proceso de despliegue.
-
-### Herramientas:
-* Herramienta 1
-* Herramienta n
-
-
-se comienza el proceso...
-
-```
-Damos ejemplos del proceso
+npm test
 ```
 
 ## Construido con:
@@ -124,8 +91,9 @@ Damos ejemplos del proceso
 * [SDKman](https://sdkman.io/) - SDK Manager
 
 ## Versionamiento
+Como manejar el código fuente y el versionamiento se encuentra en confluence:
+https://apiservice2.atlassian.net/wiki/spaces/DE/pages/700973159/Manejo+flujo+de+c+digo+fuente
 
-PENDIENTE.
 
 ## Autores
 

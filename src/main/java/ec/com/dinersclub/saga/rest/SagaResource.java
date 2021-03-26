@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 
-import ec.com.dinersclub.saga.orchestrations.transactions.ICreatePetSaga;
-import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
-import ec.com.dinersclub.saga.services.models.Petstore;
+import ec.com.dinersclub.saga.orchestrations.transactions.ICreateTarjetaCreditoSaga;
+import ec.com.dinersclub.saga.orchestrations.transactions.models.Tarjeta;
+import ec.com.dinersclub.saga.services.models.TarjetaCredito;
 
 @Path("/saga")
 public class SagaResource {
@@ -23,18 +23,18 @@ public class SagaResource {
 	private AtomicLong counter = new AtomicLong(0);
 
 	@Inject
-	ICreatePetSaga saga;
+    ICreateTarjetaCreditoSaga saga;
 
     @POST
     @Timeout(60000)
-    @Path("/pet/create")
+    @Path("/tarjeta/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.75, delay = 5000)
-    public Response create(Pet pet) {
+    public Response create(Tarjeta tarjeta) {
     	maybeFail();
-    	Petstore petstore = saga.createPet(pet);
-    	if(petstore != null) {
+    	TarjetaCredito tarjetaCredito = saga.createTarjetaCredito(tarjeta);
+    	if(tarjetaCredito != null) {
     		return Response.status(201).build();
     	}
     	return Response.noContent().build();

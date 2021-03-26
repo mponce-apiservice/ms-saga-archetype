@@ -1,6 +1,6 @@
 package ec.com.dinersclub.saga.orchestrations.transactions.models;
 
-public class PetCategory {
+public class TarjetaTags {
 	
 	private int id;
 	private String name;

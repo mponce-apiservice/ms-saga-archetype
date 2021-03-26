@@ -18,59 +18,59 @@ import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-import ec.com.dinersclub.saga.services.models.Petstore;
-import ec.com.dinersclub.saga.services.models.PetstoreDelete;
+import ec.com.dinersclub.saga.services.models.TarjetaCredito;
+import ec.com.dinersclub.saga.services.models.TarjetaCreditoDelete;
 
 @Path("/v2")
 @RegisterRestClient
-public interface PetstoreService {
+public interface TarjetaCreditoService {
 
     @GET
-    @Path("/pet/{petId}")
+    @Path("/tarjeta/{tarjetaId}")
     @Produces("application/json")
     @Retry(maxRetries = 3, delay = 2000)
     @Fallback(RollbackFallback.class)
-    Set<Petstore> getByPetId(@PathParam int petId);
+    Set<TarjetaCredito> getByTarjetaCreditoId(@PathParam int tarjetaId);
     
     
     @POST
-    @Path("/pet")
+    @Path("/tarjeta")
     @Produces("application/json")
     @Consumes("application/json")
     @Retry(maxRetries = 3, delay = 2000)
     @Fallback(RollbackFallback.class)
-    Set<Petstore> createPet(Petstore pet);
+    Set<TarjetaCredito> createTarjetaCredito(TarjetaCredito pet);
     
     @PUT
-    @Path("/pet")
+    @Path("/tarjeta")
     @Produces("application/json")
     @Consumes("application/json")
     @Retry(maxRetries = 3, delay = 2000)
     @Fallback(RollbackFallback.class)
-    Set<Petstore> updatePet(Petstore pet);
+    Set<TarjetaCredito> updateTarjetaCredito(TarjetaCredito pet);
     
     @DELETE
-    @Path("/pet/{petId}")
+    @Path("/tarjeta/{tarjetaId}")
     @Produces("application/json")
     @Retry(maxRetries = 3, delay = 2000)
     @Fallback(AsyncFallback.class)
-    Set<PetstoreDelete> deleteByPetId(@PathParam int petId);
+    Set<TarjetaCreditoDelete> deleteByTarjetaCreditoId(@PathParam int tarjetaId);
     
-    public static class AsyncFallback implements FallbackHandler<Set<PetstoreDelete>> {
+    public static class AsyncFallback implements FallbackHandler<Set<TarjetaCreditoDelete>> {
 
-        private static final Set<PetstoreDelete> EMPTY_COUNTRY = new HashSet<PetstoreDelete>();
+        private static final Set<TarjetaCreditoDelete> EMPTY_COUNTRY = new HashSet<TarjetaCreditoDelete>();
         @Override
-        public Set<PetstoreDelete> handle(ExecutionContext context) {
+        public Set<TarjetaCreditoDelete> handle(ExecutionContext context) {
             return EMPTY_COUNTRY;
         }
 
     }
     
-    public static class RollbackFallback implements FallbackHandler<Set<Petstore>> {
+    public static class RollbackFallback implements FallbackHandler<Set<TarjetaCredito>> {
 
-        private static final Set<Petstore> EMPTY_COUNTRY = new HashSet<Petstore>();
+        private static final Set<TarjetaCredito> EMPTY_COUNTRY = new HashSet<TarjetaCredito>();
         @Override
-        public Set<Petstore> handle(ExecutionContext context) {
+        public Set<TarjetaCredito> handle(ExecutionContext context) {
             return EMPTY_COUNTRY;
         }
 
