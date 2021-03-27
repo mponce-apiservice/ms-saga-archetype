@@ -2,13 +2,13 @@ package ec.com.dinersclub.saga.orchestrations.transactions.models;
 
 import java.util.List;
 
-public class Pet {
+public class Tarjeta {
 	
 	private int id;
-	private PetCategory category;
+	private TarjetaCategory category;
 	private String name;
 	private List<String> photoUrls;
-	private List<PetTags> tags;
+	private List<TarjetaTags> tags;
 	private String status;
 	
 	public int getId() {
@@ -17,10 +17,10 @@ public class Pet {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public PetCategory getCategory() {
+	public TarjetaCategory getCategory() {
 		return category;
 	}
-	public void setCategory(PetCategory category) {
+	public void setCategory(TarjetaCategory category) {
 		this.category = category;
 	}
 	public String getName() {
@@ -35,10 +35,10 @@ public class Pet {
 	public void setPhotoUrls(List<String> photoUrls) {
 		this.photoUrls = photoUrls;
 	}
-	public List<PetTags> getTags() {
+	public List<TarjetaTags> getTags() {
 		return tags;
 	}
-	public void setTags(List<PetTags> tags) {
+	public void setTags(List<TarjetaTags> tags) {
 		this.tags = tags;
 	}
 	public String getStatus() {

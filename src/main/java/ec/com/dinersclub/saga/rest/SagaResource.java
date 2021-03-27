@@ -1,8 +1,5 @@
 package ec.com.dinersclub.saga.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.inject.Inject;
@@ -17,10 +14,9 @@ import org.apache.camel.CamelContext;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 
-import ec.com.dinersclub.saga.orchestrations.transactions.CreatePetSaga;
-import ec.com.dinersclub.saga.orchestrations.transactions.ICreatePetSaga;
-import ec.com.dinersclub.saga.orchestrations.transactions.models.Pet;
-import ec.com.dinersclub.saga.services.models.Petstore;
+import ec.com.dinersclub.saga.orchestrations.transactions.CreateTarjetaCreditoSaga;
+import ec.com.dinersclub.saga.orchestrations.transactions.models.Tarjeta;
+import ec.com.dinersclub.saga.services.models.TarjetaCredito;
 
 @Path("/saga")
 public class SagaResource {
@@ -31,7 +27,7 @@ public class SagaResource {
     CamelContext context;
 
 	@Inject
-	CreatePetSaga saga;
+	CreateTarjetaCreditoSaga saga;
 
     @POST
     @Timeout(60000)
@@ -39,7 +35,7 @@ public class SagaResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.75, delay = 5000)
-    public Response create(Pet pet) {
+    public Response create(Tarjeta pet) {
     	maybeFail();
     	pet(pet);
     	return Response.status(201).build();
@@ -53,12 +49,12 @@ public class SagaResource {
         }
     }
     
-    private void pet(Pet pet) {
-    	Petstore petstore = new Petstore(pet);
+    private void pet(Tarjeta tarjeta) {
+    	TarjetaCredito petstore = new TarjetaCredito(tarjeta);
     	context.createFluentProducerTemplate()
-    	.to("direct:pet")
-    	.withHeader("petstoreId", String.valueOf(pet.getId()))
-    	.withBodyAs(petstore, Petstore.class)
+    	.to("direct:tarjeta")
+    	.withHeader("tarjetaId", String.valueOf(tarjeta.getId()))
+    	.withBodyAs(petstore, TarjetaCredito.class)
     	.request();
     }
     
